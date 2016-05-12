@@ -26,6 +26,7 @@ public class SearchController {
     @RequestMapping("/2/{input}")
     public DeferredResult<String> index2(@PathVariable(value = "input") String input) {
         DeferredResult<String> deferredResult = new DeferredResult<>(10000L);
+        Long start = System.currentTimeMillis();
         CompletableFuture<String> completableFuture = searchService.callFutureApi(input);
         completableFuture.whenComplete((res, ex) -> {
             if (ex != null) {
@@ -34,6 +35,7 @@ public class SearchController {
                 deferredResult.setResult(res);
             }
         });
+        System.out.println("Controller return after: " + (System.currentTimeMillis() - start) + " ms");
         return deferredResult;
     }
 
@@ -42,7 +44,9 @@ public class SearchController {
     public DeferredResult<String> index3(@PathVariable(value = "input") String input) {
         DeferredResult<String> deferredResult = new DeferredResult<>(10000L);
         Observable<String> observable = searchService.callObservableApi(input);
+        Long start = System.currentTimeMillis();
         observable.subscribe(deferredResult::setResult, deferredResult::setErrorResult);
+        System.out.println("Controller return after: " + (System.currentTimeMillis() - start) + " ms");
         return deferredResult;
     }
 }
