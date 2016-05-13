@@ -9,7 +9,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,7 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
 @SpringApplicationConfiguration(SearchApplication.class)
 public class SearchControllerTests {
 
@@ -46,8 +44,8 @@ public class SearchControllerTests {
 
     @Test
     public void endpoint_1_should_get_expected_content() throws Exception {
-        Mockito.when(searchService.callApi(INPUT)).
-                thenReturn(OUTPUT);
+        Mockito.when(searchService.callApi(INPUT))
+                .thenReturn(OUTPUT);
 
         mockMvc.perform(get("/1/" + INPUT))
                 .andExpect(status().isOk())
@@ -56,8 +54,8 @@ public class SearchControllerTests {
 
     @Test
     public void endpoint_2_should_get_expected_content() throws Exception {
-        Mockito.when(searchService.callFutureApi(INPUT)).
-                thenReturn(CompletableFuture.supplyAsync(() -> OUTPUT));
+        Mockito.when(searchService.callFutureApi(INPUT))
+                .thenReturn(CompletableFuture.supplyAsync(() -> OUTPUT));
 
         MvcResult mvcResult = mockMvc.perform(get("/2/" + INPUT))
                 .andExpect(request().asyncStarted())
